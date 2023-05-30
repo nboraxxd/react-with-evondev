@@ -1,0 +1,20 @@
+.btn {
+  display: inline-block;
+  width: 300px;
+  padding: 20px 30px;
+  margin: 10px;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+
+  color: #fff;
+  background-color: #2979ff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btnSecondary {
+  background-color: transparent;
+  color: #2979ff;
+  border: 1px solid currentColor;
+}

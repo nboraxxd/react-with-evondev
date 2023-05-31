@@ -1,14 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Button from './components/button/Button'
+import React from 'react'
+import './App.scss'
+import CardList from './components/card/CardList'
+import { GlobalStyles } from './components/GlobalStyle'
 
 function App() {
   return (
     <div>
-      <Button>Primary</Button>
-      <Button isSecondary>Secondary</Button>
+      <GlobalStyles />
+      <CardList />
     </div>
   )
 }

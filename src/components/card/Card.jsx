@@ -51,6 +51,7 @@ const CardRow = styled.div`
     font-weight: 500;
     font-size: 1.8rem;
     line-height: 1.5;
+    color: ${(props) => props.theme.colors.purple};
   }
 
   .price {

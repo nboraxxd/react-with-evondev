@@ -1,133 +1,36 @@
 import React from 'react'
-import styled from 'styled-components'
-
-const CardItem = styled.section`
-  position: relative;
-  margin-left: 30px;
-  margin-top: 93px;
-  width: calc(100% / 3 - 30px);
-
-  .line-clamp {
-    display: -webkit-box;
-    -webkit-line-clamp: var(--line-clamp, 1);
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    word-break: break-all;
-  }
-`
-
-const CardPicture = styled.figure`
-  img {
-    display: block;
-    width: 100%;
-    height: 400px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-`
-
-const CardInfo = styled.div`
-  position: absolute;
-  bottom: -64px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 91%;
-  max-width: 100%;
-  padding: 20px;
-  border-radius: 20px;
-  background: #fff;
-`
-
-const CardRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  &:not(:first-child) {
-    margin-top: 30px;
-  }
-
-  .title {
-    font-weight: 500;
-    font-size: 1.8rem;
-    line-height: 1.5;
-    color: ${(props) => props.theme.colors.purple};
-  }
-
-  .price {
-    margin-left: 5px;
-    /* flex-shrink: 0; */
-    font-weight: 700;
-    font-size: 1.8rem;
-    line-height: 1.5;
-
-    color: transparent;
-    background: linear-gradient(86.88deg, #7d6aff 1.38%, #ffb86c 64.35%, #fc2872 119.91%);
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-`
-
-const CardAuthor = styled.figure`
-  display: flex;
-  align-items: center;
-  color: ${(props) => props.secondaryColor || '#333'};
-
-  img {
-    display: block;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .author-name {
-    margin-left: 12px;
-    font-weight: 300;
-    font-size: 1.6rem;
-    line-height: 1.5;
-  }
-`
-
-const CardReact = styled.div`
-  display: flex;
-  align-items: center;
-
-  .react-quantity {
-    margin-left: 12px;
-    font-weight: 400;
-    font-size: 1.6rem;
-    line-height: 1.5;
-    color: #333;
-  }
-`
 
 const Card = (props) => {
+  console.log(props.colorText)
   return (
-    <CardItem>
-      <CardPicture>
+    <section className="relative ml-[30px] mt-[93px] w-[calc(100%/3-30px)]">
+      <figure>
         <img
+          className="block w-full h-[400px] rounded-lg object-cover"
           src={
             props.productImg ||
             'https://images.unsplash.com/photo-1546994372-f636adc59e4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Z2lybCUyMGN1dGV8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=500&q=60'
           }
           alt="Cosmic Perspective"
         />
-      </CardPicture>
-
-      <CardInfo>
-        <CardRow>
-          <CardAuthor secondaryColor={props.secondary}>
+      </figure>
+      {/* [&:not(:first-child)]:mt-[30px] */}
+      <div className="absolute -bottom-[63px] left-1/2 -translate-x-1/2 w-[91%] max-w-full p-[20px] rounded-[20px] bg-white">
+        <div className="flex justify-between items-center [&:not(:first-child)]:mt-[30px]">
+          <figure className="flex items-center text-[#333]">
             <img
+              className="block w-[30px] h-[30px] rounded-full object-cover"
               src={
                 props.authorAvt ||
                 'https://images.unsplash.com/photo-1625492922105-5914617fd869?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=715&q=80'
               }
               alt="@zndrson"
             />
-            <figcaption className="author-name">@zndrson</figcaption>
-          </CardAuthor>
-          <CardReact>
+            <figcaption className="ml-[12px] text-[#333] font-light text-[1.6rem] leading-normal">
+              @zndrson
+            </figcaption>
+          </figure>
+          <div className="flex items-center">
             <svg
               width="20"
               height="18"
@@ -140,17 +43,26 @@ const Card = (props) => {
                 fill="#FC2872"
               />
             </svg>
-            <p className="react-quantity">256</p>
-          </CardReact>
-        </CardRow>
+            <p className="ml-[12px] text-[#333] font-normal text-[1.6rem] leading-normal">256</p>
+          </div>
+        </div>
 
-        <CardRow>
-          <h3 className="title line-clamp">Cosmic Perspective</h3>
-          <p className="price">12,000 PSL</p>
-        </CardRow>
-      </CardInfo>
-    </CardItem>
+        <div className="flex justify-between items-center [&:not(:first-child)]:mt-[30px]">
+          <h3
+            className={`font-medium text-[1.8rem] leading-normal ${
+              props.colorText || 'text-[#345594]'
+            }`}
+          >
+            Cosmic Perspective
+          </h3>
+          <p
+            className={`shrink-0 ml-[5px] text-[1.8rem] font-bold leading-normal text-transparent bg-clip-text bg-[linear-gradient(86.88deg,_#7d6aff_1.38%,_#ffb86c_64.35%,_#fc2872_119.91%)]`}
+          >
+            12,000 PSL
+          </p>
+        </div>
+      </div>
+    </section>
   )
 }
-
 export default Card

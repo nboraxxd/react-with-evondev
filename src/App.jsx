@@ -1,14 +1,11 @@
 import React from 'react'
 import './App.scss'
 import CardList from './components/card/CardList'
+import Form from './components/form/Form'
+import FormCustomHook from './components/form/FormCustomHook'
 
-const theme = {
-  colors: {
-    purple: '#7d6aff',
-  },
-}
 function App() {
-  return <CardList />
+  return <Form />
 }
 
 export default App

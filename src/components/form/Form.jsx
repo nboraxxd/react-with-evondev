@@ -33,7 +33,7 @@ const Form = () => {
   }
 
   return (
-    <section className="w-[1170px] max-w-full ml-auto mr-auto">
+    <section className="w-[1170px] max-w-[calc(100%-40px)] mx-auto">
       <form className="p-5" onSubmit={handleSubmitForm} autoComplete="off">
         <div>
           <input

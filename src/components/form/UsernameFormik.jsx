@@ -1,5 +1,6 @@
-import { useFormik } from 'formik'
 import React from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 const dataJobs = [
   { id: 1, value: 'softwareEngineering', jobName: 'Software Engineering' },
@@ -11,34 +12,18 @@ const dataJobs = [
   { id: 7, value: 'other', jobName: 'Other' },
 ]
 
-const validate = (values, touched) => {
-  const errors = {}
-  if (!values.username) {
-    errors.username = 'Please enter your username'
-  }
-
-  if (values.username.length > 20) {
-    errors.username = 'Username must not exceed 20 characters'
-  }
-
-  if (!values.email) {
-    errors.email = 'Please enter your email'
-  }
-
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Your email is not valid'
-  }
-
-  return errors
-}
-
 const UsernameFormik = () => {
   const formik = useFormik({
     initialValues: {
       username: '',
       email: '',
     },
-    validate,
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .required('Please enter your username')
+        .max(20, 'Username must not exceed 20 characters'),
+      email: Yup.string().required('Please enter your email').email('Your email is not valid'),
+    }),
     onSubmit: (values) => {
       console.log({ username: values.username, email: values.email })
     },
@@ -61,9 +46,7 @@ const UsernameFormik = () => {
             name="username"
             autoComplete="off"
             placeholder="Enter your username"
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            {...formik.getFieldProps('username')}
           />
           <p className="h-4 px-1 mt-[2px] text-[#E74C3C] font-normal text-xs">
             {(formik.touched?.username && formik.errors?.username) || ''}
@@ -79,12 +62,9 @@ const UsernameFormik = () => {
             className="p-[15px] mt-[5px] outline-none border border-purple-200 rounded-lg bg-white focus:[box-shadow:_0px_0px_0px_2px_rgba(125,_106,_255,_0.5)] transition-all"
             type="email"
             id="email"
-            name="email"
             autoComplete="off"
             placeholder="Enter your email address"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            {...formik.getFieldProps('email')}
           />
           <p className="h-4 px-1 mt-[2px] text-[#E74C3C] font-normal text-xs">
             {(formik.touched?.email && formik.errors?.email) || ''}

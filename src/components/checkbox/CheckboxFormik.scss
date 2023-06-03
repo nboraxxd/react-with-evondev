@@ -1,0 +1,14 @@
+.custom-checkbox {
+  &-inner {
+    width: 20px;
+    height: 20px;
+  }
+
+  .custom-checkbox-inner {
+    color: #fff;
+  }
+
+  input:checked + div .custom-checkbox-inner {
+    color: #a855f7;
+  }
+}

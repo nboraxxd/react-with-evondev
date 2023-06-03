@@ -1,6 +1,10 @@
 import React from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
+import InputFormik from '../input/InputFormik'
+import RadioFormik from '../radio/RadioFormik'
+import CheckboxFormik from '../checkbox/CheckboxFormik'
+import DropdownFormik from '../dropdown/DropdownFormik'
 
 const dataJobs = [
   { id: 1, value: 'softwareEngineering', jobName: 'Software Engineering' },
@@ -12,165 +16,144 @@ const dataJobs = [
   { id: 7, value: 'other', jobName: 'Other' },
 ]
 
+const valueJobList = dataJobs.map((item) => item.value)
+
 const RegisterFormik = () => {
+  const USERNAME_MIN_LENGTH = 5
+  const USERNAME_MAX_LENGTH = 20
+  const PASSWORD_MIN_LENGTH = 8
+
   const RegisterSchema = Yup.object().shape({
     username: Yup.string()
       .required('Username is required')
-      .min(5, 'Username must be 5 chars at minimum')
-      .max(20, 'Username must not exceed 20 chars'),
-    email: Yup.string().required('Email is required').email('Invalid email address format'),
+      .min(USERNAME_MIN_LENGTH, 'Username must be 5 chars at minimum')
+      .max(USERNAME_MAX_LENGTH, 'Username must not exceed 20 chars'),
+    email: Yup.string().required('Email address is required').email('Invalid email address format'),
     password: Yup.string()
       .required('Password is required')
-      .min(8, 'Password must be 5 chars at minimum')
-      .matches(/[a-zA-Z]/, 'Password can only contain Latin letters'),
-    job: Yup.string().required('Username is required'),
+      .min(PASSWORD_MIN_LENGTH, 'Your password must be 8 chars at minimum')
+      .matches(/[0-9]/, 'Password requires a number')
+      .matches(/[a-z]/, 'Password requires a lowercase letter')
+      .matches(/[A-Z]/, 'Password requires an uppercase letter')
+      .matches(/[^\w]/, 'Password requires a symbol'),
+    gender: Yup.string()
+      .required('Please select your gender')
+      .oneOf(['male', 'female'], 'You can select male or female'),
+    job: Yup.string()
+      .required('Please select your job')
+      .oneOf(valueJobList, 'Please double check your selection'),
     term: Yup.boolean().oneOf([true], 'Read and agree to our terms'),
   })
 
   return (
     <section className="w-[1170px] max-w-[calc(100%-40px)] py-6 mx-auto">
+      <h1 className="font-semibold text-5xl leading-normal text-center">Register Form</h1>
       <Formik
-        initialValues={{ username: '', email: '', password: '', job: '', term: false }}
-        onSubmit={(values) => console.log(values)}
+        initialValues={{ username: '', email: '', password: '', gender: '', job: '', term: false }}
         validationSchema={RegisterSchema}
+        onSubmit={(values, actions) => {
+          setTimeout(() => {
+            console.log(values, actions)
+            actions.resetForm()
+          }, 1000)
+        }}
       >
-        {({ errors, touched }) => (
-          <Form className="w-[400px] mx-auto" noValidate>
-            {/* Username */}
-            <div className="flex flex-col mt-[10px]">
-              <label htmlFor="username" className="font-medium text-sm cursor-pointer">
-                Username
-              </label>
-              <Field
-                className="p-[15px] mt-[5px] outline-none border border-purple-200 rounded-lg bg-white focus:[box-shadow:_0px_0px_0px_2px_rgba(125,_106,_255,_0.5)] transition-all"
+        {(props) => {
+          console.log(props)
+          const watchGender = props.values?.gender
+
+          return (
+            <Form className="w-[300px] mx-auto mt-[40px]" noValidate>
+              {/* Username */}
+              <InputFormik
+                label="Username"
+                id="username"
                 name="username"
                 type="text"
-                id="username"
-                autoComplete="off"
                 placeholder="Enter your username"
+                autoComplete="username"
               />
-              {/* <p className="h-4 px-1 mt-[2px] text-[#E74C3C] font-normal text-xs">
-                {errors.username && touched.username && errors.username}
-              </p> */}
-              <div className="h-4">
-                <ErrorMessage
-                  name="username"
-                  component="p"
-                  className="px-1 mt-[2px] text-[#E74C3C] font-normal text-xs"
-                />
-              </div>
-            </div>
 
-            {/* Email address */}
-            <div className="flex flex-col mt-[10px]">
-              <label htmlFor="email" className="font-medium text-sm cursor-pointer">
-                Email address
-              </label>
-              <Field
-                className="p-[15px] mt-[5px] outline-none border border-purple-200 rounded-lg bg-white focus:[box-shadow:_0px_0px_0px_2px_rgba(125,_106,_255,_0.5)] transition-all"
+              {/* Email address */}
+              <InputFormik
+                label="Email address"
+                id="email"
                 name="email"
                 type="email"
-                id="email"
-                placeholder="Enter your email"
+                placeholder="Enter your email address"
+                autoComplete="email"
+                className="mt-[10px]"
               />
-              <div className="h-4">
-                <ErrorMessage
-                  name="email"
-                  component="p"
-                  className="px-1 mt-[2px] text-[#E74C3C] font-normal text-xs"
-                />
-              </div>
-            </div>
 
-            {/* Password */}
-            <div className="flex flex-col mt-[10px]">
-              <label htmlFor="password" className="font-medium text-sm cursor-pointer">
-                Password
-              </label>
-              <Field
-                className="p-[15px] mt-[5px] outline-none border border-purple-200 rounded-lg bg-white focus:[box-shadow:_0px_0px_0px_2px_rgba(125,_106,_255,_0.5)] transition-all"
+              {/* Password */}
+              <InputFormik
+                label="Password"
+                id="password"
                 name="password"
                 type="password"
-                id="password"
-                autoComplete="off"
                 placeholder="Enter your password"
+                autoComplete="new-password"
+                className="mt-[10px]"
               />
-              <div className="h-4">
-                <ErrorMessage
-                  name="password"
-                  component="p"
-                  className="px-1 mt-[2px] text-[#E74C3C] font-normal text-xs"
-                />
-              </div>
-            </div>
 
-            {/* Your job */}
-            <div className="flex flex-col mt-[10px]">
-              <label htmlFor="job" className="font-medium text-sm cursor-pointer">
-                Your job
-              </label>
-              <Field
-                className="p-[15px] mt-[5px] outline-none border border-purple-200 rounded-lg bg-white focus:[box-shadow:_0px_0px_0px_2px_rgba(125,_106,_255,_0.5)] transition-all"
+              {/* Gender */}
+              <div className="flex flex-col mt-[10px]">
+                <label className="font-medium text-sm select-none">Gender</label>
+                <div className="flex items-center gap-x-[20px] mt-[5px] ml-[7px]">
+                  {/* Male */}
+                  <RadioFormik
+                    id="male"
+                    name="gender"
+                    value="male"
+                    checked={watchGender === 'male'}
+                  />
+                  {/* Female */}
+                  <RadioFormik
+                    id="female"
+                    name="gender"
+                    value="female"
+                    checked={watchGender === 'female'}
+                  />
+                </div>
+                <p className="h-4 px-1 mt-[2px] text-[#E74C3C] font-normal text-xs">
+                  {(props.touched.gender && props.errors.gender) || ''}
+                </p>
+              </div>
+
+              {/* Dropdown select */}
+              <DropdownFormik
                 name="job"
-                id="job"
-                placeholder="Enter your job"
-                as="select"
-              >
-                <option value="" hidden>
-                  Select your option
-                </option>
-                <option value="softwareEngineering">Software</option>
-                <option value="data">Data</option>
-                <option value="design&UserExperience">Design & User Experience</option>
-                <option value="tax">Tax</option>
-                <option value="bookkeeping">Bookkeeping</option>
-                <option value="hiringProcess">Hiring Process</option>
-                <option value="other">Other</option>
-              </Field>
-              <div className="h-4">
-                <ErrorMessage
-                  name="job"
-                  component="p"
-                  className="px-1 mt-[2px] text-[#E74C3C] font-normal text-xs"
-                />
-              </div>
-            </div>
-
-            {/* Term */}
-            <div className="mt-[10px]">
-              <Field
-                className="p-4 rounded-md border border-gray-100"
-                name="term"
-                id="term"
-                type="checkbox"
+                dataJobs={dataJobs}
+                labelContent="Your job"
+                labelDefault="Select your job"
+                setValue={props.setFieldValue}
               />
-              <label
-                htmlFor="term"
-                className="inline-block ml-[10px] font-medium text-sm select-none"
-              >
+
+              {/* Term */}
+              <CheckboxFormik id="term" name="term">
                 I accept the{' '}
-                <a href="#!" className="border-b border-neutral-800">
+                <a href="#!" className="underline">
                   terms and conditions
                 </a>
-              </label>
-              <div className="h-4 mt-[2px]">
-                <ErrorMessage
-                  name="term"
-                  component="p"
-                  className="px-1 mt-[2px] text-[#E74C3C] font-normal text-xs"
-                />
-              </div>
-            </div>
+              </CheckboxFormik>
 
-            {/* Button submit */}
-            <button
-              type="submit"
-              className="w-full h-[56px] mt-[15px] p-4 bg-purple-600 rounded-lg font-bold text-white text-base"
-            >
-              Submit
-            </button>
-          </Form>
-        )}
+              {/* Button submit */}
+              <button
+                type="submit"
+                className={`w-full h-[56px] mt-[15px] p-4 rounded-lg font-bold text-white text-base ${
+                  props.isSubmitting ? 'bg-purple-400' : 'bg-purple-600'
+                }`}
+                disabled={props.isSubmitting}
+              >
+                {props.isSubmitting ? (
+                  <div className="w-5 h-5 mx-auto border-2 border-t-2 border-white rounded-full border-t-transparent animate-spin"></div>
+                ) : (
+                  'Submit'
+                )}
+              </button>
+            </Form>
+          )
+        }}
       </Formik>
     </section>
   )

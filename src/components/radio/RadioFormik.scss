@@ -1,0 +1,10 @@
+.custom-radio {
+  div {
+    box-shadow: 0 0 0 5px #fff;
+  }
+
+  input:checked + div {
+    background-color: #a855f7;
+    box-shadow: 0 0 0 2.5px #fff, 0 0 0 5px #a855f7;
+  }
+}
